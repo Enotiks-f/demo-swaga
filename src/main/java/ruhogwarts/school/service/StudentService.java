@@ -2,6 +2,7 @@ package ruhogwarts.school.service;
 
 
 import org.springframework.stereotype.Service;
+import ruhogwarts.school.model.Faculty;
 import ruhogwarts.school.model.Student;
 import ruhogwarts.school.repository.StudentRepository;
 
@@ -20,6 +21,10 @@ public class StudentService {
         return studentRepository.findAll();
     }
 
+    public Collection<Student> getBetweenAgeStudent(int min, int max) {
+        return studentRepository.findByAgeBetween(min, max);
+    }
+
     public Optional<Student> getStudent(Long id) {
         return  studentRepository.findById(id);
     }
@@ -34,5 +39,10 @@ public class StudentService {
 
     public void removeStudent(Long id) {
         studentRepository.deleteById(id);
+    }
+
+    public Faculty getFacultyStudent(Long studentId) {
+        Student student = studentRepository.findById(studentId).orElseThrow(() -> new IllegalArgumentException("Student with id: " + studentId + " not found"));
+        return student.getFaculty();
     }
 }
