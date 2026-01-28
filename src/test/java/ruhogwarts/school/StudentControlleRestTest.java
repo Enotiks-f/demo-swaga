@@ -1,6 +1,7 @@
 package ruhogwarts.school;
 
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -21,6 +22,8 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 
 
+
+
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class StudentControlleRestTest {
@@ -31,8 +34,10 @@ public class StudentControlleRestTest {
     @Autowired
     private StudentRepository repository;
 
-    @Autowired
-    private StudentService service;
+    @AfterEach
+    public void resetDB() {
+        repository.deleteAll();
+    }
 
     // Тест POST запроса
     @Test
@@ -90,6 +95,43 @@ public class StudentControlleRestTest {
         return repository.save(std);
 
     }
+
+    @Test
+    void whenGetAllStudents_thenStatus200() {
+        createTestStd("Alex");
+        createTestStd("Bob");
+
+        ResponseEntity<Student[]> response =
+                restTemplate.getForEntity("/student", Student[].class);
+
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+        Assertions.assertNotNull(response.getBody());
+        assertThat(response.getBody().length > 0, is(true));
+    }
+
+    @Test
+    void whenGetStudentsBetweenAge_thenStatus200() {
+        Student s1 = new Student();
+        s1.setName("Tom");
+        s1.setAge(10);
+        repository.save(s1);
+
+        Student s2 = new Student();
+        s2.setName("Jerry");
+        s2.setAge(15);
+        repository.save(s2);
+
+        ResponseEntity<Student[]> response = restTemplate.getForEntity(
+                "/student/between/age?min=9&max=12",
+                Student[].class
+        );
+
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+        Assertions.assertNotNull(response.getBody());
+        assertThat(response.getBody().length, is(1));
+        assertThat(response.getBody()[0].getName(), is("Tom"));
+    }
+
 
 
 
