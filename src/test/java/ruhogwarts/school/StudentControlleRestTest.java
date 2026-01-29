@@ -15,7 +15,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import ruhogwarts.school.model.Student;
 import ruhogwarts.school.repository.StudentRepository;
-import ruhogwarts.school.service.StudentService;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;

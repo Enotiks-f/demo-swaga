@@ -32,10 +32,10 @@ public class FacultyControllerRestTest {
     @Autowired
     TestRestTemplate restTemplate;
 
-//    @AfterEach
-//    void resetDB() {
-//        repository.deleteAll();
-//    }
+    @AfterEach
+    void resetDB() {
+        repository.deleteAll();
+    }
 
     @Test
     void whenAddFaculty_thenStatus201() {
