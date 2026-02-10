@@ -8,7 +8,7 @@ FROM student s
 
 
 ALTER TABLE student
-    ADD COLUMN avatar_id INT;
+    ADD COLUMN avatar_id INT;1
 
 ALTER TABLE student
     ADD CONSTRAINT student_avatar_fk
