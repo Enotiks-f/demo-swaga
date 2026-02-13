@@ -45,4 +45,16 @@ public class StudentService {
         Student student = studentRepository.findById(studentId).orElseThrow(() -> new IllegalArgumentException("Student with id: " + studentId + " not found"));
         return student.getFaculty();
     }
+
+    public long coundAllStudents() {
+        return studentRepository.count();
+    }
+
+    public Double getAvgAge() {
+        return studentRepository.getAverageAge();
+    }
+
+    public List<Student> findTop5ByOrderByIdDesc() {
+        return studentRepository.findTop5ByOrderByIdDesc();
+    }
 }

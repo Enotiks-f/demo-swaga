@@ -19,7 +19,7 @@ import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Collection;
-import java.util.Optional;
+import java.util.List;
 
 @RestController
 @RequestMapping("/student")
@@ -112,5 +112,23 @@ public class StudentController {
         headers.setContentType(MediaType.parseMediaType(avatar.getMediaType()));
         headers.setContentLength(avatar.getFileSize());
         return ResponseEntity.status(HttpStatus.OK).headers(headers).body(avatar.getData());
+    }
+
+    @GetMapping("/count")
+    public ResponseEntity<Long> getCount() {
+        long count = studentService.coundAllStudents();
+        return ResponseEntity.ok(count);
+    }
+
+    @GetMapping("/avg/age")
+    public ResponseEntity<Double> getAverageAge() {
+        Double avg = studentService.getAvgAge();;
+        return ResponseEntity.ok(avg);
+    }
+
+    @GetMapping("/get/top5")
+    public ResponseEntity<Collection<Student>> getTop5Students() {
+        List<Student> top5 = studentService.findTop5ByOrderByIdDesc();
+        return ResponseEntity.ok(top5);
     }
 }
