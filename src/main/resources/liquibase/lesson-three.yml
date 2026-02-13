@@ -1,0 +1,7 @@
+databaseChangeLog:
+  - changeSet:
+      id: 34
+      author: enotik
+      sqlFile:
+        path: liquibase/scripts/student.sql
+        relativeToChangelogFile: false
