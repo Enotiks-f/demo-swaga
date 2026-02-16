@@ -53,4 +53,16 @@ public class FacultyService {
         return  f.getStudents();
     }
 
+    public String getLongerNameFaculty() {
+        logger.info("Was");
+
+        List<Faculty> faculties = facultyRepository.findAll();
+        return faculties.stream()
+                .map(Faculty::getName)
+                .filter(Objects::nonNull)
+                .max(Comparator.comparingInt(String::length))
+                .orElse("");
+    }
+
+
 }

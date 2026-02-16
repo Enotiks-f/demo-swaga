@@ -105,7 +105,7 @@ public class StudentController {
     }
 
     @GetMapping("/{id}/avatar/download")
-    public ResponseEntity<byte[]> downloadAvatar(@PathVariable Long id) throws IOException {
+    public ResponseEntity<byte[]> downloadAvatar(@PathVariable Long id){
         Avatar avatar = avatarService.findOrCreateAvatar(id);
 
         HttpHeaders headers = new HttpHeaders();
@@ -122,7 +122,7 @@ public class StudentController {
 
     @GetMapping("/avg/age")
     public ResponseEntity<Double> getAverageAge() {
-        Double avg = studentService.getAvgAge();;
+        Double avg = studentService.getAvgAge();
         return ResponseEntity.ok(avg);
     }
 
@@ -131,4 +131,21 @@ public class StudentController {
         List<Student> top5 = studentService.findTop5ByOrderByIdDesc();
         return ResponseEntity.ok(top5);
     }
+
+    @GetMapping("/get/sorted/on/name/first")
+    public ResponseEntity<Collection<String>> getSortedStudentsByFirstName() {
+        List<String> sort = studentService.searchStudentByNameA();
+        return ResponseEntity.ok(sort);
+    }
+
+    @GetMapping("/get/ageavg")
+    public ResponseEntity<Integer> getAvgAge() {
+        int age = studentService.getAvgAgeStudent();
+        return ResponseEntity.ok(age);
+    }
+
+
+
+
+
 }

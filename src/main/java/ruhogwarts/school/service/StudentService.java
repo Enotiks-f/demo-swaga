@@ -32,7 +32,7 @@ public class StudentService {
     }
 
     public Optional<Student> getStudent(Long id) {
-        logger.info("Was invoked method for getting student with id: " + id);
+        logger.info("Was invoked method for getting student with id: {}", id);
         return  studentRepository.findById(id);
     }
 
@@ -52,7 +52,7 @@ public class StudentService {
     }
 
     public Faculty getFacultyStudent(Long studentId) {
-        logger.info("Was invoked method for getting faculty with id: " + studentId);
+        logger.info("Was invoked method for getting faculty with id: {}", studentId);
         Student student = studentRepository.findById(studentId).orElseThrow(() -> new IllegalArgumentException("Student with id: " + studentId + " not found"));
         return student.getFaculty();
     }
@@ -72,4 +72,26 @@ public class StudentService {
         logger.info("Was invoked method for finding top 5 students");
         return studentRepository.findTop5ByOrderByIdDesc();
     }
+
+    public List<String> searchStudentByNameA() {
+        logger.info("Was invoked method for searching student by name");
+
+        List<Student> list = studentRepository.findAll();
+
+        return list.stream()
+                .map(s -> s.getName().toUpperCase())
+                .filter(s -> s.toUpperCase().startsWith("А"))
+                .sorted()
+                .toList();
+
+    }
+
+    public int getAvgAgeStudent() {
+        logger.info("Was invoked method for getting average age");
+
+        return (int) studentRepository.findAll().stream()
+                .mapToInt(Student::getAge).average().orElse(0);
+    }
+
+
 }
