@@ -18,6 +18,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -142,6 +143,49 @@ public class StudentController {
     public ResponseEntity<Integer> getAvgAge() {
         int age = studentService.getAvgAgeStudent();
         return ResponseEntity.ok(age);
+    }
+
+    @GetMapping("/print-paralle")
+    public void getPrintParalle() {
+
+        Collection<Student> s = studentService.getAllStudents();
+        List<Student> s1 = new ArrayList<>(s);
+
+        System.out.println(s1.get(0).getName());
+        System.out.println(s1.get(1).getName());
+
+        new Thread(() -> System.out.println(s1.get(2).getName())).start();{};
+        new Thread(() -> System.out.println(s1.get(3).getName())).start();{};
+
+        new Thread(() -> System.out.println(s1.get(4).getName())).start();{};
+        new Thread(() -> System.out.println(s1.get(5).getName())).start();{};
+
+    }
+
+    @GetMapping("/students/print-synchronized")
+    public void getPrintSynchronized() {
+        Collection<Student> s = studentService.getAllStudents();
+        List<Student> s1 = new ArrayList<>(s);
+
+        getPrintName(s1.get(0).getName());
+        getPrintName(s1.get(1).getName());
+
+        new Thread(() -> getPrintName(s1.get(2).getName())).start();{};
+        new Thread(() -> getPrintName(s1.get(3).getName())).start();{};
+
+        new Thread(() -> getPrintName(s1.get(4).getName())).start();{};
+        new Thread(() -> getPrintName(s1.get(5).getName())).start();{};
+    }
+
+    private synchronized void getPrintName(String name) {
+        System.out.println("print NAME: " + name);
+    }
+
+    @DeleteMapping("/remove/all")
+    public ResponseEntity<Void> removeAllStudents() {
+        studentService.deleteAllStudent();
+
+        return ResponseEntity.noContent().build();
     }
 
 

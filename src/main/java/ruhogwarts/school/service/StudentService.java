@@ -33,7 +33,7 @@ public class StudentService {
 
     public Optional<Student> getStudent(Long id) {
         logger.info("Was invoked method for getting student with id: {}", id);
-        return  studentRepository.findById(id);
+        return studentRepository.findById(id);
     }
 
     public Student addStudent(Student student) {
@@ -62,8 +62,7 @@ public class StudentService {
         return studentRepository.count();
     }
 
-    public Double getAvgAge()
-    {
+    public Double getAvgAge() {
         logger.info("Was invoked method for avg age");
         return studentRepository.getAverageAge();
     }
@@ -86,6 +85,12 @@ public class StudentService {
 
     }
 
+    public void deleteAllStudent() {
+        logger.info("Was invoked method for deleting all students");
+
+        studentRepository.deleteAll();
+    }
+
     public int getAvgAgeStudent() {
         logger.info("Was invoked method for getting average age");
 
@@ -93,5 +98,7 @@ public class StudentService {
                 .mapToInt(Student::getAge).average().orElse(0);
     }
 
-
+    private synchronized void getPrintName(String name) {
+        System.out.println("print NAME: " + name);
+    }
 }

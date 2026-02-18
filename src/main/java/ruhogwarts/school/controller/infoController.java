@@ -22,5 +22,4 @@ public class infoController {
     public long getInfoSum() {
         return infoService.getSum();
     }
-
 }
