@@ -1,6 +1,8 @@
 package ruhogwarts.school.service;
 
 import jakarta.transaction.Transactional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -14,12 +16,15 @@ import ruhogwarts.school.repository.StudentRepository;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Objects;
 
 import static java.nio.file.StandardOpenOption.CREATE_NEW;
 
 @Service
 @Transactional
 public class AvatarService {
+
+    Logger logger = LoggerFactory.getLogger(AvatarService.class);
 
     @Value("${student.avatar.dir.path}")
     private String avatarDir;
@@ -33,9 +38,10 @@ public class AvatarService {
     }
 
     public void uploadAvatar(Long studentId, MultipartFile file) throws IOException {
-        Student std = studentRepository.findById(studentId).orElseThrow(() -> new StudentNotFoundException());
+        logger.info("Was invoked method for uploading avatar with id {}", studentId);
+        Student std = studentRepository.findById(studentId).orElseThrow(StudentNotFoundException::new);
 
-        Path path = Path.of(avatarDir, studentId + "." + getExtension(file.getOriginalFilename()));
+        Path path = Path.of(avatarDir, studentId + "." + getExtension(Objects.requireNonNull(file.getOriginalFilename())));
         Files.createDirectories(path.getParent());
         Files.deleteIfExists(path);
 
@@ -57,8 +63,9 @@ public class AvatarService {
     }
 
     public Avatar findOrCreateAvatar(Long studentId) {
+        logger.info("Was invoked method for finding avatar with id {}", studentId);
         Student student = studentRepository.findById(studentId)
-                .orElseThrow(() -> new StudentNotFoundException());
+                .orElseThrow(StudentNotFoundException::new);
 
         return avatarRepository.findByStudentId(studentId)
                 .orElseGet(() -> {
@@ -67,5 +74,7 @@ public class AvatarService {
                     return newAvatar;
                 });
     }
-    public String getExtension(String fileName) {return fileName.substring(fileName.lastIndexOf(".") + 1);}
+    public String getExtension(String fileName) {
+        logger.info("Was invoked method for reading file with name {}", fileName);
+        return fileName.substring(fileName.lastIndexOf(".") + 1);}
 }
