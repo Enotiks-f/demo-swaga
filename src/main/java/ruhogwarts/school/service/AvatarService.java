@@ -6,7 +6,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import ruhogwarts.school.exeption.AvatarNotFoundException;
 import ruhogwarts.school.exeption.StudentNotFoundException;
 import ruhogwarts.school.model.Avatar;
 import ruhogwarts.school.model.Student;
